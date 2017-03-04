@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "285973664237",
+    "firebase_url": "https://sysaa-be58b.firebaseio.com",
+    "project_id": "sysaa-be58b",
+    "storage_bucket": "sysaa-be58b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285973664237:android:c82308b0fdb7f65f",
+        "android_client_info": {
+          "package_name": "com.sem6.sysaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "285973664237-lof50g4bih36bns1c98h7sdf60drbd1s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sem6.sysaa",
+            "certificate_hash": "967b37d889774829c6f5ca9f398199ac00f3fda7"
+          }
+        },
+        {
+          "client_id": "285973664237-75nnjesief24gkd3bodv9k7anl5n39nm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATUxdhFTsQs3HiIqYEjXn6uWQFKWCFpj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "285973664237-75nnjesief24gkd3bodv9k7anl5n39nm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
