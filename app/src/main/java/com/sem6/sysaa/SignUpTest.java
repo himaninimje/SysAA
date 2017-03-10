@@ -8,11 +8,14 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -21,6 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,9 +37,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import android.os.Handler;
 
+import java.util.ArrayList;
+
 public class SignUpTest extends AppCompatActivity implements View.OnClickListener {
 
-
+    TextView info;
     private EditText mName;
     private EditText emailtext;
     private EditText passwordtext;
@@ -45,19 +54,26 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
     public String email;
     public String password;
     public String repassword;
-
+    String checkuid;
 
     //defining FireBase Auth object
     public FirebaseAuth firebaseAuth;
-
+    int i=0;
     //defining FireBase real-time database object
     public DatabaseReference mDatabase1;
-
+    String macAddress;
+            //Toast.makeText(SignUpTest.this, macAddress, Toast.LENGTH_LONG).show();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_test);
+        /*WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wInfo = wifiManager.getConnectionInfo();
+        macAddress = wInfo.getMacAddress();*/
 
+        //TelephonyManager tm=(TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        //macAddress=tm.getDeviceId();
+        macAddress= android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         signUpBtn = (Button) findViewById(R.id.signupBtn);
 
         signUpBtn.setOnClickListener(this);
@@ -134,23 +150,68 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
 
             //Initializing FireBase Auth object
             firebaseAuth = FirebaseAuth.getInstance();
-            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wInfo = wifiManager.getConnectionInfo();
-            String macAddress = wInfo.getMacAddress();
-            Toast.makeText(SignUpTest.this, macAddress, Toast.LENGTH_LONG).show();
-            //creating a new user in FireBase Auth Database
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            //checking if success
-                            if (task.isSuccessful()) {
-                                //display some message here
 
-                                Toast.makeText(SignUpTest.this, "Registration Failed", Toast.LENGTH_LONG).show();
+            //chck mac id exits or not!
+            /*Firebase fb=new Firebase("https://sysaa-be58b.firebaseio.com/example");
+            final ArrayList<String> userlist=new ArrayList<>();
+
+            fb.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value =dataSnapshot.getValue(String.class);
+                    userlist.add(value);
+                    System.out.println(userlist);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });*/
+            Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
+            fb1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    checkuid= dataSnapshot.getValue(String.class);
+                    info.setText(info.getText()+"\n checkamc here "+checkuid);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+            //checkmac=fb1.child(macAddress).child("uid").getSpec().toString();
+            info=(TextView) findViewById(R.id.info);
+            info.setText(macAddress+"\n"+checkuid);
+            info.setText(info.getText()+"\n before adding to maindb"+(i++));
+            //creating a new user in FireBase Auth Database
+            if(checkuid==null)
+            {
+                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task)
+                            {
+                                //checking if success
+                                info.setText(macAddress+"\n"+checkuid);
+                                if (task.isSuccessful()) {
+                                    //display some message here
+                                    Firebase fb=new Firebase("https://sysaa-be58b.firebaseio.com/example/");
+                                    //Set an attribute child in it as name (as user entered during sign up
+                                    final String user_id = firebaseAuth.getCurrentUser().getUid();  //Set parent as UID
+                                    info.setText(info.getText()+"\n adding to maindb"+(i++));
+                                    fb.child(macAddress).child("UID").setValue(user_id);
+                                    Toast.makeText(SignUpTest.this, "Registration Success", Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+            else
+            {
+                Toast.makeText(SignUpTest.this, "Registration Failed, Duplicate MAC ID", Toast.LENGTH_LONG).show();
+            }
 
             /*  This code is executed after 4000ms or 4 seconds because first the user is created with
                 a randomly generated firebase unique UID in the Authentication Database and ONLY THEN that UID is taken to create a
@@ -160,37 +221,38 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
              */
 
             final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
+            if(checkuid==null)
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
-                        //Create a new node named "Users" in your real-time database.
-                        mDatabase1 = FirebaseDatabase.getInstance().getReference().child("Users");
+                            //Create a new node named "Users" in your real-time database.
+                            mDatabase1 = FirebaseDatabase.getInstance().getReference().child("Users");
+                            info.setText(info.getText()+"\n handler"+i++);
+                            final String Name = mName.getText().toString().trim();      //Set an attribute child in it as name (as user entered during sign up
+                            final String user_id = firebaseAuth.getCurrentUser().getUid();  //Set parent as UID
 
-                        final String Name = mName.getText().toString().trim();      //Set an attribute child in it as name (as user entered during sign up
-                        final String user_id = firebaseAuth.getCurrentUser().getUid();  //Set parent as UID
+                            final String emailid = emailtext.getText().toString().trim();
+                            final String pass = passwordtext.getText().toString().trim();
 
-                        final String emailid = emailtext.getText().toString().trim();
-                        final String pass = passwordtext.getText().toString().trim();
+                            //add name attribute and set its value as Name entered by user under "Users"
+                            mDatabase1.child(user_id).child("name").setValue(Name);
 
-                        //add name attribute and set its value as Name entered by user under "Users"
-                        mDatabase1.child(user_id).child("name").setValue(Name);
+                            //add emailid attribute and set its value as E-Mail entered by user under "Users"
+                            mDatabase1.child(user_id).child("email").setValue(emailid);
 
-                        //add emailid attribute and set its value as E-Mail entered by user under "Users"
-                        mDatabase1.child(user_id).child("email").setValue(emailid);
+                            //pushing a new parent "Second Empty Patent
+                            mDatabase1.child("Second Empty Parent");
 
-                        //pushing a new parent "Second Empty Patent
-                        mDatabase1.child("Second Empty Parent");
+                            //Creating a new child password under the parent "Second Empty Parent"
+                            mDatabase1.child("Second Empty Parent").child("password").setValue(pass);
 
-                        //Creating a new child password under the parent "Second Empty Parent"
-                        mDatabase1.child("Second Empty Parent").child("password").setValue(pass);
-
-                    } catch (Exception e) {
-                        Toast.makeText(SignUpTest.this, "", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast.makeText(SignUpTest.this, "", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            }, 4000);   //4 seconds delay
+                }, 4000);   //4 seconds delay
 
 
 
