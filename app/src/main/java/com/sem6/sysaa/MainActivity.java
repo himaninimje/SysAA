@@ -1,6 +1,7 @@
 package com.sem6.sysaa;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,20 +25,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 //SIGN IN HERE
 public class MainActivity extends AppCompatActivity {
 
     private EditText mEmailField;
     private EditText mPasswordField;
-
+    TextView info;
     private Button mLoginBtn;
     private TextView mSignupBtn;
-    private String checkuid;
+    String checkuid1;
+    AlertDialog alert11;
     //Declaring Firebase Database object
     private FirebaseAuth mAuth;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout li;
     long back_pressed;
+    String macAddress;
 
 
     @Override
@@ -67,14 +69,25 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialize the Firebase Authentication Database Object
         mAuth = FirebaseAuth.getInstance();
-
+        macAddress= android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         mEmailField = (EditText) findViewById(R.id.emailField);
         mPasswordField = (EditText) findViewById(R.id.passwordField);
 
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (TextView) findViewById(R.id.signupBtn);
         mProgress = new ProgressDialog(this);
+        Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
+        fb1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                checkuid1= dataSnapshot.getValue().toString();
+                System.out.println("\n checkamc here "+checkuid1);
+            }
 
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
         /*  On this activity start (This is the launcher activity)
             the app first checks the AuthState of the app, with
             AuthStateListener object. firebaseAuth is a FirebaseAuth
@@ -100,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     mProgress.setMessage("Give Us A Moment...");
                     mProgress.show();
                     mProgress.dismiss();
+                    System.out.println("okay............................................");
                     Intent intentx= new Intent(MainActivity.this,DashboardPage.class);
                     startActivity(intentx);
                     finish();
@@ -108,61 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         needs to sign up to programmatically create the node in real-time
                         database. Please note the nodes should exist in order to run the code.
                      */
-                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
 
-                    mDatabase.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            /* In this method of onDataChange, the operation are performed on the
-                                data of the real-time database by taking or retrieving values from
-                                it using a method called "datasnapshot".
-
-                                Ex: final String string = dataSnapshot.child("level").getValue().toString().trim();
-
-                                This statement declares a final string which stores the value of an ATTRIBUTE named
-                                "level" under the "Users" parent in the database and gets its value and converts it
-                                to string. The trim() method avoids spacing issues such has " 2"  is taken as "2"
-                             */
-
-                            /*
-                                whatever operations you need to perform, by retrieving values from database,
-                                first give it a reference like under which child and what attribute, and then
-                                create variables to store the datasnapshot values
-
-                             */
-
-                            /*
-                            final String string = dataSnapshot.child("level").getValue().toString().trim();
-                            if (string.equals("4")) {
-                                mProgress.dismiss();
-                                Intent intent = new Intent(MainActivity.this, AccountAdminPanel.class);
-                                startActivity(intent);
-                                finish();
-                            } else if (string.equals("99")) {
-                                mProgress.dismiss();
-                                Intent intent = new Intent(MainActivity.this, AwatingForApproval.class);
-                                startActivity(intent);
-                                finish();
-                            } else if (string.equals("2")) {
-                                mProgress.dismiss();
-                                Intent intent = new Intent(MainActivity.this, AccountActivityAdmin.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                mProgress.dismiss();
-                                Intent intent = new Intent(MainActivity.this, AccountActivityUser.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            */
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
                 }
             }
         };
@@ -236,36 +196,42 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar snackbar = Snackbar
                                 .make(li, R.string.auth_failed, Snackbar.LENGTH_LONG);
                         snackbar.show();
-                    } else {
+                    }
+                    else
+                    {
                         Snackbar snackbar = Snackbar
                                 .make(li, R.string.auth_success, Snackbar.LENGTH_LONG);
                         snackbar.show();
 
-                        //mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
 
-                        String macAddress= android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-                        
-                        Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
-                        fb1.addValueEventListener(new com.firebase.client.ValueEventListener() {
-                            @Override
-                            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                                checkuid= dataSnapshot.getValue(String.class);
-                            }
+                        info=(TextView) findViewById(R.id.info);
+                        System.out.println(macAddress);
 
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-
-                            }
-                        });
-                        System.out.println(checkuid);
-                        if(!checkuid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
+                        System.out.println(checkuid1);
+                        /*if(checkuid1==null)
+                        {}
+                        else */if(!checkuid1.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
                         {
                             progressDialog.dismiss();
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                            Toast.makeText(MainActivity.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
+                            /*final AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                            builder1.setTitle("Sign In Failed");
                             builder1.setMessage("UnAuthorized Sign-in Attempt");
                             builder1.setCancelable(true);
-                            AlertDialog alert11 = builder1.create();
-                            alert11.show();
+
+
+                            builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    alert11.cancel();
+
+
+                                }
+                            });
+                            alert11=builder1.create();
+                            alert11.show();*/
                             FirebaseAuth.getInstance().signOut();
                             Intent intent=new Intent(MainActivity.this,MainActivity.class);
                             startActivity(intent);
