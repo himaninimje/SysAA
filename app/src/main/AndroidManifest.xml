@@ -28,7 +28,8 @@
             android:label="@string/title_activity_account" />
         <activity android:name=".SignUpTest" />
         <activity android:name=".DashboardPage" />
-        <activity android:name=".Tab"></activity>
+        <activity android:name=".Tab"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

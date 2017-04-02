@@ -8,48 +8,48 @@
     <TableRow>
         <TextView
             android:text="time 1"
-            android:textSize="150px"
+            android:textSize="30px"
             android:padding="3dip" />
         <TextView
             android:text="dbms"
             android:gravity="right"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
     </TableRow>
 
     <TableRow>
         <TextView
             android:text="time 2"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
         <TextView
             android:text="daa"
             android:gravity="right"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
     </TableRow>
 
     <TableRow>
         <TextView
             android:text="time 3"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
         <TextView
             android:text="iwcs"
             android:gravity="right"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
     </TableRow>
 
     <TableRow>
         <TextView
             android:text="time 4"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
         <TextView
             android:text="ai"
             android:gravity="right"
             android:padding="3dip"
-            android:textSize="150px"/>
+            android:textSize="30px"/>
     </TableRow>
 </TableLayout>

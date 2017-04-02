@@ -268,7 +268,11 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
                                     fb.child(macAddress).child("Roll").setValue(rollno);
                                     fb.child(macAddress).child("Batch").setValue(batchnum.toUpperCase());
                                     fb.child(macAddress).child("Semester").setValue(semester);
-                                    fb.child(macAddress).child("Shift").setValue(shiftt);
+
+                                    fb.child(macAddress).child("AI").setValue(0);
+                                    fb.child(macAddress).child("DBMS").setValue(0);
+                                    fb.child(macAddress).child("IWCS").setValue(0);
+                                    fb.child(macAddress).child("DAA").setValue(0);
                                     startActivity(new Intent(SignUpTest.this, Tab.class));
                                     Toast.makeText(SignUpTest.this, "Registration Success", Toast.LENGTH_LONG).show();
                                 }
