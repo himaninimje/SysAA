@@ -268,7 +268,7 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
                                     fb.child(macAddress).child("Roll").setValue(rollno);
                                     fb.child(macAddress).child("Batch").setValue(batchnum.toUpperCase());
                                     fb.child(macAddress).child("Semester").setValue(semester);
-
+                                    fb.child(macAddress).child("Shift").setValue(shiftt);
                                     fb.child(macAddress).child("AI").setValue(0);
                                     fb.child(macAddress).child("DBMS").setValue(0);
                                     fb.child(macAddress).child("IWCS").setValue(0);

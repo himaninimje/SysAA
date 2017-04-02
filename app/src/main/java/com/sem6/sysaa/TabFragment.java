@@ -1,25 +1,23 @@
 package com.sem6.sysaa;
 
 
-         import android.os.Bundle;
-         import android.support.annotation.Nullable;
-         import android.support.design.widget.TabLayout;
-         import android.support.v4.app.Fragment;
-         import android.support.v4.app.FragmentManager;
-         import android.support.v4.app.FragmentPagerAdapter;
-         import android.support.v4.view.ViewPager;
-         import android.view.LayoutInflater;
-         import android.view.View;
-         import android.view.ViewGroup;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-/**
- * Created by Ratan on 7/27/2015.
- */
+
 public class TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 2 ;
+    public static int int_items = 3 ;
 
     @Nullable
     @Override
@@ -69,7 +67,7 @@ public class TabFragment extends Fragment {
             switch (position){
                 case 0 : return new Schedule();
                 case 1 : return new Attendance();
-                //case 2 : return new Profile();
+                case 2 : return new Profile();
             }
             return null;
         }
