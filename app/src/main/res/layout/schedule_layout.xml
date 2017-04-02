@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1">
+    <TableRow>
+        <TextView
+            android:text="time 1"
+            android:textSize="150px"
+            android:padding="3dip" />
+        <TextView
+            android:text="dbms"
+            android:gravity="right"
+            android:padding="3dip"
+            android:textSize="150px"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="time 2"
+            android:padding="3dip"
+            android:textSize="150px"/>
+        <TextView
+            android:text="daa"
+            android:gravity="right"
+            android:padding="3dip"
+            android:textSize="150px"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="time 3"
+            android:padding="3dip"
+            android:textSize="150px"/>
+        <TextView
+            android:text="iwcs"
+            android:gravity="right"
+            android:padding="3dip"
+            android:textSize="150px"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="time 4"
+            android:padding="3dip"
+            android:textSize="150px"/>
+        <TextView
+            android:text="ai"
+            android:gravity="right"
+            android:padding="3dip"
+            android:textSize="150px"/>
+    </TableRow>
+</TableLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item android:title="Name and picture"
+        android:id="@+id/nav_item_profile"
+        android:icon="@drawable/gallery"/>
+
+
+
+    <group android:id="@+id/group_settings_id">
+
+        <item android:title="TimeTable"
+            android:id="@+id/nav_item_tt"
+            android:icon="@drawable/fixtures"/>
+
+        <item android:title="Settings"
+            android:id="@+id/nav_item_sent"
+            android:icon="@drawable/settings"/>
+
+        <item android:title="Log Out"
+            android:id="@+id/nav_item_inbox"
+            android:icon="@drawable/spam"/>
+    </group>
+
+
+</menu>

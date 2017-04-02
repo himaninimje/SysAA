@@ -3,8 +3,10 @@
     package="com.sem6.sysaa">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".SysAA"
         android:allowBackup="true"
@@ -25,7 +27,8 @@
             android:name=".AccountActivity"
             android:label="@string/title_activity_account" />
         <activity android:name=".SignUpTest" />
-        <activity android:name=".DashboardPage"></activity>
+        <activity android:name=".DashboardPage" />
+        <activity android:name=".Tab"></activity>
     </application>
 
 </manifest>

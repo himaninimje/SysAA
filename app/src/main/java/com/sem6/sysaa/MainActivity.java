@@ -76,12 +76,20 @@ public class MainActivity extends AppCompatActivity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (TextView) findViewById(R.id.signupBtn);
         mProgress = new ProgressDialog(this);
+        info=(TextView) findViewById(R.id.info);
+        System.out.println(macAddress);
+
+        System.out.println(checkuid1);
+
         Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
         fb1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                checkuid1= dataSnapshot.getValue().toString();
-                System.out.println("\n checkamc here "+checkuid1);
+                try {
+                    checkuid1 = dataSnapshot.getValue().toString();
+                    System.out.println("\n checkamc here " + checkuid1);
+                }
+                catch (NullPointerException ne){}
             }
 
             public void onCancelled(FirebaseError firebaseError) {
@@ -114,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     mProgress.show();
                     mProgress.dismiss();
                     System.out.println("okay............................................");
-                    Intent intentx= new Intent(MainActivity.this,DashboardPage.class);
+                    Intent intentx= new Intent(MainActivity.this,Tab.class);
                     startActivity(intentx);
                     finish();
                     /*  This Real-time Database object checks in the Real-time database
@@ -203,15 +211,11 @@ public class MainActivity extends AppCompatActivity {
                                 .make(li, R.string.auth_success, Snackbar.LENGTH_LONG);
                         snackbar.show();
 
-                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-
-                        info=(TextView) findViewById(R.id.info);
-                        System.out.println(macAddress);
-
-                        System.out.println(checkuid1);
-                        /*if(checkuid1==null)
-                        {}
-                        else */if(!checkuid1.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
+                        if(checkuid1==null)
+                        {
+                            System.out.println("\n\n\nNULL\n\n\n");
+                        }
+                        else if(!checkuid1.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
                         {
                             progressDialog.dismiss();
                             Toast.makeText(MainActivity.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
@@ -239,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Intent intent = new Intent(MainActivity.this, DashboardPage.class);
+                            Intent intent = new Intent(MainActivity.this, Tab.class);
                             startActivity(intent);
                             progressDialog.dismiss();
                             finish();
