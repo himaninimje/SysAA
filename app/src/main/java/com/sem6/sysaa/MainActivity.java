@@ -29,6 +29,13 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 //SIGN IN HERE
 public class MainActivity extends AppCompatActivity {
 
@@ -213,7 +220,12 @@ public class MainActivity extends AppCompatActivity {
 
                         if(checkuid1==null)
                         {
-                            System.out.println("\n\n\nNULL\n\n\n");
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent=new Intent(MainActivity.this,MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
                         else if(!checkuid1.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
                         {
@@ -243,6 +255,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
+                            //Date tttt= Calendar.getInstance().getTime();
+                            /*DateFormat df=new SimpleDateFormat("HHmm");
+                            String tttt=df.format(Calendar.getInstance().getTime());
+                            Toast.makeText(MainActivity.this, tttt, Toast.LENGTH_LONG).show();*/
                             Intent intent = new Intent(MainActivity.this, Tab.class);
                             startActivity(intent);
                             progressDialog.dismiss();

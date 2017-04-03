@@ -3,6 +3,7 @@ package com.sem6.sysaa;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -13,10 +14,17 @@ import android.view.Menu;
 import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Tab extends AppCompatActivity{
     DrawerLayout mDrawerLayout;
@@ -25,13 +33,16 @@ public class Tab extends AppCompatActivity{
     FragmentTransaction mFragmentTransaction;
     MenuItem name;
     Menu menu,m;
+    LinearLayout li;
     Firebase fbname;
     String names;
+    long back_pressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -64,7 +75,6 @@ public class Tab extends AppCompatActivity{
          * Lets inflate the very first fragment
          * Here , we are inflating the TabFragment as the first Fragment
          */
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
@@ -110,22 +120,20 @@ public class Tab extends AppCompatActivity{
         mDrawerToggle.syncState();
 
     }
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu(menu);
-        this.menu=menu;
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.drawermenu, menu);
-        //updateMenuItems(menu);
-        return true;
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + 3000 > System.currentTimeMillis()) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            back_pressed = System.currentTimeMillis();
+            Snackbar snackbar = Snackbar
+                    .make(li, R.string.backpress, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
-    //@Override
-    public void updateMenuItems(Menu menu)
-    {
-        MenuItem menuI = menu.findItem(R.id.nav_item_profile);
-        menuI.setTitle(names);
-    }*/
 }
 
 

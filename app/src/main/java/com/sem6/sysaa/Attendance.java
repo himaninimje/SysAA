@@ -7,6 +7,7 @@ package com.sem6.sysaa;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.TextView;
 
 /**
  * Created by Ratan on 7/29/2015.

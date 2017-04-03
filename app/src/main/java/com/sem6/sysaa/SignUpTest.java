@@ -203,12 +203,18 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
         {
             Toast.makeText(SignUpTest.this, "Please Enter Batch", Toast.LENGTH_LONG).show();
         }
-        else if (batchnum.toUpperCase().equals("A1")||batchnum.toUpperCase().equals("A2")||batchnum.toUpperCase().equals("A3")||
-                batchnum.toUpperCase().equals("A4"))
+        else if ((batchnum.toUpperCase().equals("A1")||batchnum.toUpperCase().equals("A2")||batchnum.toUpperCase().equals("A3")||
+                batchnum.toUpperCase().equals("A4"))&&shiftt.equals("1"))
+        {
+            shiftOK=true;
             batchOK=true;
-        else if(batchnum.toUpperCase().equals("B1")||batchnum.toUpperCase().equals("B2")||batchnum.toUpperCase().equals("B3")||
-                batchnum.toUpperCase().equals("B4"))
+        }
+        else if((batchnum.toUpperCase().equals("B1")||batchnum.toUpperCase().equals("B2")||batchnum.toUpperCase().equals("B3")||
+                batchnum.toUpperCase().equals("B4"))&&shiftt.equals("2"))
+        {
+            shiftOK=true;
             batchOK=true;
+        }
         else
             Toast.makeText(SignUpTest.this, "Please Enter Valid Batch", Toast.LENGTH_LONG).show();
 
@@ -225,28 +231,7 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
             firebaseAuth = FirebaseAuth.getInstance();
 
             //chck mac id exits or not!
-            /*Firebase fb=new Firebase("https://sysaa-be58b.firebaseio.com/example");
-            final ArrayList<String> userlist=new ArrayList<>();
 
-            fb.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String value =dataSnapshot.getValue(String.class);
-                    userlist.add(value);
-                    System.out.println(userlist);
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });*/
-
-
-            //checkmac=fb1.child(macAddress).child("uid").getSpec().toString();
-            //info.setText(macAddress+"\n"+checkuid);
-            //info.setText(info.getText()+"\n before adding to maindb"+(i++));
-            //creating a new user in FireBase Auth Database
             if(checkuid==null)
             {
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
