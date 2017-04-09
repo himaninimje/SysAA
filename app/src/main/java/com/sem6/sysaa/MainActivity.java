@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(checkuid1);
 
-        Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
+        Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/UID");
         fb1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                     mProgress.show();
                     mProgress.dismiss();
                     System.out.println("okay............................................");
-                    Intent intentx= new Intent(MainActivity.this,Tab.class);
+                    Intent intentx= new Intent(MainActivity.this,Nav.class);
                     startActivity(intentx);
                     finish();
                     /*  This Real-time Database object checks in the Real-time database
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                             /*DateFormat df=new SimpleDateFormat("HHmm");
                             String tttt=df.format(Calendar.getInstance().getTime());
                             Toast.makeText(MainActivity.this, tttt, Toast.LENGTH_LONG).show();*/
-                            Intent intent = new Intent(MainActivity.this, Tab.class);
+                            Intent intent = new Intent(MainActivity.this, Nav.class);
                             startActivity(intent);
                             progressDialog.dismiss();
                             finish();

@@ -10,4 +10,8 @@
     <string name="auth_success">Welcome, Let us get started</string>
     <string name="backpress">Press back button again to exit the app</string>
     <string name="title_activity_dashboard_page">Dashboard</string>
+    <string name="title_activity_nav">Nav</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

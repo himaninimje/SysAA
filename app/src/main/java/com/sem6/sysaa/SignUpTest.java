@@ -1,8 +1,5 @@
 package com.sem6.sysaa;
 
-/**
- * Created by pd on 27-02-2017.
- */
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
@@ -84,7 +81,7 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
 
         signUpBtn.setOnClickListener(this);
         TextView haveacc=(TextView) findViewById(R.id.haveAccount);
-        fb1=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/UID");
+        fb1=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/UID");
         fb1.addValueEventListener(new com.firebase.client.ValueEventListener() {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
@@ -244,21 +241,22 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
                                 //info.setText(macAddress+"\n"+checkuid);
                                 if (task.isSuccessful()) {
                                     //display some message here
-                                    Firebase fb=new Firebase("https://sysaa-be58b.firebaseio.com/example/");
+                                    Firebase fb=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/");
+                                    Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/Att/");
                                     //Set an attribute child in it as name (as user entered during sign up
                                     final String user_id = firebaseAuth.getCurrentUser().getUid();  //Set parent as UID
                                     //info.setText(info.getText()+"\n adding to maindb"+(i++));
                                     fb.child(macAddress).child("UID").setValue(user_id);
-                                    fb.child(macAddress).child("Name").setValue(Name);
+                                    fb.child(macAddress).child("Name").setValue(Name.toUpperCase());
                                     fb.child(macAddress).child("Roll").setValue(rollno);
                                     fb.child(macAddress).child("Batch").setValue(batchnum.toUpperCase());
                                     fb.child(macAddress).child("Semester").setValue(semester);
                                     fb.child(macAddress).child("Shift").setValue(shiftt);
-                                    fb.child(macAddress).child("AI").setValue(0);
-                                    fb.child(macAddress).child("DBMS").setValue(0);
-                                    fb.child(macAddress).child("IWCS").setValue(0);
-                                    fb.child(macAddress).child("DAA").setValue(0);
-                                    startActivity(new Intent(SignUpTest.this, Tab.class));
+                                    fb1.child(macAddress).child("Total").child("AI").setValue(0);
+                                    fb1.child(macAddress).child("Total").child("DBMS").setValue(0);
+                                    fb1.child(macAddress).child("Total").child("IWCS").setValue(0);
+                                    fb1.child(macAddress).child("Total").child("DAA").setValue(0);
+                                    startActivity(new Intent(SignUpTest.this, Nav.class));
                                     Toast.makeText(SignUpTest.this, "Registration Success", Toast.LENGTH_LONG).show();
                                 }
                             }

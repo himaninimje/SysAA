@@ -14,8 +14,8 @@ import android.view.Menu;
 import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -42,7 +42,7 @@ public class Tab extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
-
+        li = (LinearLayout) findViewById(R.id.linear);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -52,11 +52,12 @@ public class Tab extends AppCompatActivity{
          *Setup the DrawerLayout and NavigationView
          */
         String macAddress= android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        fbname=new Firebase("https://sysaa-be58b.firebaseio.com/example/"+macAddress+"/Name");
+        fbname=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/Name");
         fbname.addValueEventListener(new com.firebase.client.ValueEventListener() {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 names=dataSnapshot.getValue(String.class);
+
                 NavigationView navigationView = (NavigationView) findViewById(R.id.dashboardnav) ;
                 m=navigationView.getMenu();
                 MenuItem mi=m.findItem(R.id.nav_item_profile);
