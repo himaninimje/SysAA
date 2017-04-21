@@ -44,7 +44,10 @@
         <activity
             android:name=".Nav"
             android:label="@string/title_activity_nav"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".TeacherLogin" />
+        <activity android:name=".TeacherSignup" />
+        <activity android:name=".TeacherDash"></activity>
     </application>
 
 </manifest>

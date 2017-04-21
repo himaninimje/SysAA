@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -27,9 +28,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -49,8 +53,8 @@ public class Nav extends AppCompatActivity
     DrawerLayout drawer;
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager mBeaconManager;
-    Firebase fbname;
-    String names;
+    Firebase fbname,checkteacher;
+    String names,uid;
     Menu m;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,25 @@ public class Nav extends AppCompatActivity
         setContentView(R.layout.activity_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        uid=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        checkteacher= new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+uid+"/Name");
+        checkteacher.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    String x = dataSnapshot.getValue().toString();
 
+                    if (x != null)
+                        startActivity(new Intent(Nav.this, TeacherDash.class));
+                }
+                catch(NullPointerException exp){}
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

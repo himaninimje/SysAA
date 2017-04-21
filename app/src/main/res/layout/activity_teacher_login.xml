@@ -6,24 +6,27 @@
     android:fillViewport="true">
 
     <LinearLayout
-        android:id="@+id/lay123"
+        android:id="@+id/lay1234"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:orientation="vertical">
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/testinfo"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Student Sign In"
+            android:text="Teacher Sign In"
             android:textSize="30sp"
             android:textColor="#f80"/>
 
         <TextView
-            android:id="@+id/signupBtn"
+            android:id="@+id/signupBtnn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -46,7 +49,7 @@
                 android:text="Email"/>
 
             <EditText
-                android:id="@+id/emailField"
+                android:id="@+id/eemailField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
@@ -61,14 +64,14 @@
                 android:text="Password"/>
 
             <EditText
-                android:id="@+id/passwordField"
+                android:id="@+id/ppasswordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
                 android:inputType="textPassword"/>
 
             <Button
-                android:id="@+id/loginBtn"
+                android:id="@+id/loginBtnn"
                 android:layout_width="150dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
@@ -86,8 +89,8 @@
                 android:layout_marginTop="8dp"
                 android:textColor="#424242"
                 android:layout_gravity="center"
-                android:text="Teacher Sign In"
-                android:id="@+id/teacherLogin"/>
+                android:text="Student Sign In"
+                android:id="@+id/stuLogin"/>
         </LinearLayout>
 
     </LinearLayout>

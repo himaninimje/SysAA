@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/sign_up_relative">
+    android:id="@+id/tsign_up_relative">
     <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -11,7 +11,7 @@
         android:background="#FDE3A7">
 
         <LinearLayout
-            android:id="@+id/ssign_up_linear"
+            android:id="@+id/tsign_up_linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Student Sign Up"
+                android:text="Teacher Sign Up"
                 android:textSize="30sp"
                 android:textColor="#f80"/>
 
@@ -35,13 +35,13 @@
                 android:textSize="14sp"
                 android:text="Have an account?"
                 android:textColor="#424242"
-                android:id="@+id/haveAccount"/>
+                android:id="@+id/thaveAccount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textColor="#424242"
-                android:text="Teacher SignUp? "/>
+                android:text="Student SignUp? "/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,57 +55,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
                 android:textColorHint="#e6e6e6"
-                android:id="@+id/editName"/>
+                android:id="@+id/teditName"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#6C7A89"
-                android:text="Roll No."/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:textColorHint="#e6e6e6"
-                android:id="@+id/rollNo"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#6C7A89"
-                android:text="Batch"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:textColorHint="#d3d3d3"
-                android:hint="A1/A2/A3/A4/B1/B2/B3/B4"
-                android:id="@+id/batch"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:text="Shift"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:textColorHint="#e6e6e6"
-                android:id="@+id/shift"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:text="Semester"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#424242"
-                android:textColorHint="#e6e6e6"
-                android:id="@+id/semester"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,7 +65,7 @@
                 android:text="Email"/>
 
             <EditText
-                android:id="@+id/sign_up_email_text"
+                android:id="@+id/tsign_up_email_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
@@ -129,7 +80,7 @@
                 android:text="Password"/>
 
             <EditText
-                android:id="@+id/sign_up_password_text"
+                android:id="@+id/tsign_up_password_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
@@ -144,7 +95,7 @@
                 android:text="Confirm Password"/>
 
             <EditText
-                android:id="@+id/sign_up_repassword_text"
+                android:id="@+id/tsign_up_repassword_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#424242"
@@ -154,7 +105,7 @@
 
 
             <Button
-                android:id="@+id/signupBtn"
+                android:id="@+id/tsignupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#0099ff"

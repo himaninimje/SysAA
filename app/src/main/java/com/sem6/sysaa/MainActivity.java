@@ -1,10 +1,7 @@
 package com.sem6.sysaa;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -20,7 +17,6 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.core.Context;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,22 +24,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 //SIGN IN HERE
 public class MainActivity extends AppCompatActivity {
 
     private EditText mEmailField;
     private EditText mPasswordField;
-    TextView info;
     private Button mLoginBtn;
-    private TextView mSignupBtn;
+    private TextView mSignupBtn,teacherLogin;
     String checkuid1;
     AlertDialog alert11;
     //Declaring Firebase Database object
@@ -71,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        teacherLogin=(TextView) findViewById(R.id.teacherLogin);
         li = (LinearLayout) findViewById(R.id.lay123);
 
         //Initialize the Firebase Authentication Database Object
@@ -83,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
         mLoginBtn = (Button) findViewById(R.id.loginBtn);
         mSignupBtn = (TextView) findViewById(R.id.signupBtn);
         mProgress = new ProgressDialog(this);
-        info=(TextView) findViewById(R.id.info);
-        System.out.println(macAddress);
-
-        System.out.println(checkuid1);
 
         Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/UID");
         fb1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
                     checkuid1 = dataSnapshot.getValue().toString();
-                    System.out.println("\n checkamc here " + checkuid1);
                 }
                 catch (NullPointerException ne){}
             }
@@ -119,42 +102,33 @@ public class MainActivity extends AppCompatActivity {
 
                 if (firebaseAuth.getCurrentUser() != null)
                 {
-                    /*  User has logged-in already
-                        Move user directly to the Account Activity
-                        or the activity you need to display after
-                        logging the user in
-                    */
-
                     mProgress.setMessage("Give Us A Moment...");
                     mProgress.show();
                     mProgress.dismiss();
-                    System.out.println("okay............................................");
                     Intent intentx= new Intent(MainActivity.this,Nav.class);
                     startActivity(intentx);
                     finish();
-                    /*  This Real-time Database object checks in the Real-time database
-                        for a node (already created) named "Users". For first time, user
-                        needs to sign up to programmatically create the node in real-time
-                        database. Please note the nodes should exist in order to run the code.
-                     */
+
 
                 }
             }
         };
-
+        teacherLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,TeacherLogin.class));
+            }
+        });
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startSignIn();
-
             }
         });
 
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(new Intent(MainActivity.this, SignUpTest.class));
             }
         });
