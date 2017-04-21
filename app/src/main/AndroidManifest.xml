@@ -38,11 +38,9 @@
             android:name=".AccountActivity"
             android:label="@string/title_activity_account" />
         <activity android:name=".SignUpTest" />
-        <activity android:name=".DashboardPage" />
         <activity
             android:name=".Tab"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BeaconScan" />
         <activity
             android:name=".Nav"
             android:label="@string/title_activity_nav"
