@@ -96,7 +96,7 @@ public class SignUpTest extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SignUpTest.this, MainActivity.class));
+                startActivity(new Intent(SignUpTest.this, StuLogin.class));
             }
         });
     }

@@ -9,8 +9,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -50,19 +48,21 @@ public class Nav extends AppCompatActivity
     long back_pressed;
     protected static final String TAG = "MonitoringActivity";
     Button home,nav;
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager mBeaconManager;
-    Firebase fbname,checkteacher;
+    Firebase fbname,checkteacher,batchfb;
     String names,uid;
     Menu m;
+    int chk=0;
+    public static String batchn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        uid=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        /*uid=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         checkteacher= new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+uid+"/Name");
         checkteacher.addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,7 +80,7 @@ public class Nav extends AppCompatActivity
             public void onCancelled(FirebaseError firebaseError) {
 
             }
-        });
+        });*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,6 +104,21 @@ public class Nav extends AppCompatActivity
                 m=navigationView.getMenu();
                 MenuItem mi=m.findItem(R.id.nav_item_profile);
                 mi.setTitle("Hello, "+names);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        batchfb=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/Batch");
+        batchfb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                batchn=dataSnapshot.getValue().toString();
+
+                chk=1;
+
             }
 
             @Override
@@ -182,17 +197,7 @@ public class Nav extends AppCompatActivity
         if (id == R.id.nav_item_logout)
         {
             FirebaseAuth.getInstance().signOut();
-            Intent intent= new Intent(Nav.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (id == R.id.nav_item_settings) {
-            Intent intent= new Intent(Nav.this, Settings.class);
-            startActivity(intent);
-            finish();
-        } else if (id == R.id.nav_item_tt) {
-
-        } else if (id == R.id.nav_item_profile) {
-            Intent intent= new Intent(Nav.this, Profile.class);
+            Intent intent= new Intent(Nav.this, StuLogin.class);
             startActivity(intent);
             finish();
         }
@@ -226,15 +231,18 @@ public class Nav extends AppCompatActivity
         Toast.makeText(this, "inside service connect", Toast.LENGTH_SHORT).show();
     }
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-        for (Beacon beacon: beacons) {
+        for (Beacon beacon : beacons) {
             if (beacon.getServiceUuid() == 0xfeaa && beacon.getBeaconTypeCode() == 0x00) {
                 // This is a Eddystone-UID frame
                 Identifier namespaceId = beacon.getId1();
                 Identifier instanceId = beacon.getId2();
-                Log.d(TAG, "I see a beacon transmitting namespace id: "+namespaceId+
-                        " and instance id: "+instanceId+
-                        " approximately "+beacon.getDistance()+" meters away.");
-                Intent intent=new Intent(this,Tab.class);
+                Log.d(TAG, "I see a beacon transmitting namespace id: " + namespaceId +
+                        " and instance id: " + instanceId +
+                        " approximately " + beacon.getDistance() + " meters away.");
+                while (chk == 0) {
+                }
+            }
+                Intent intent = new Intent(this, Tab.class);
                 startActivity(intent);
 
                 // Do we have telemetry data?
@@ -244,15 +252,15 @@ public class Nav extends AppCompatActivity
                     long pduCount = beacon.getExtraDataFields().get(3);
                     long uptime = beacon.getExtraDataFields().get(4);
 
-                    Log.d(TAG, "The above beacon is sending telemetry version "+telemetryVersion+
-                            ", has been up for : "+uptime+" seconds"+
-                            ", has a battery level of "+batteryMilliVolts+" mV"+
-                            ", and has transmitted "+pduCount+" advertisements.");
+                    Log.d(TAG, "The above beacon is sending telemetry version " + telemetryVersion +
+                            ", has been up for : " + uptime + " seconds" +
+                            ", has a battery level of " + batteryMilliVolts + " mV" +
+                            ", and has transmitted " + pduCount + " advertisements.");
 
                 }
             }
         }
-    }
+
 
     public void onPause() {
         super.onPause();

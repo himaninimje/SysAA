@@ -65,7 +65,7 @@ public class TeacherLogin extends AppCompatActivity {
         stuLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TeacherLogin.this,MainActivity.class));
+                startActivity(new Intent(TeacherLogin.this,StuLogin.class));
             }
         });
 
@@ -114,6 +114,7 @@ public class TeacherLogin extends AppCompatActivity {
                             @Override
                             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                                 try {
+                                    if(firebaseAuth.getCurrentUser()!=null){
                                     Firebase tteach = new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/" + firebaseAuth.getCurrentUser().getUid() + "/Name");
                                     tteach.addValueEventListener(new ValueEventListener() {
                                         @Override
@@ -141,7 +142,7 @@ public class TeacherLogin extends AppCompatActivity {
 
                                         }
                                     });
-                                }
+                                }}
                                 catch(NullPointerException exp)
                                 {
                                     progressDialog.dismiss();

@@ -32,6 +32,7 @@ public class Attendance extends Fragment {
     private Calendar calendar;
     private int year, month, day;
     Bundle extras;
+    Iterator<DataSnapshot> subjctatt;
     public DatePickerDialog.OnDateSetListener myOnDateSetListener;
     TextView att,testdate;String macAddress;
     @Nullable
@@ -54,10 +55,19 @@ public class Attendance extends Fragment {
                 dateattendance.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        dateatt.setText("AI:\t"+dataSnapshot.child("AI").getValue(String.class));
+                        subjctatt=dataSnapshot.getChildren().iterator();
+                        while(subjctatt.hasNext())
+                        {
+                            String sub=subjctatt.next().toString();
+                            int k=sub.indexOf("key = ");
+                            int v=sub.indexOf(("value = "));
+                            int curl=sub.indexOf('}');
+                            dateatt.setText(dateatt.getText()+"\n"+sub.substring(k+6,k+10)+": "+sub.substring(v+8,curl));
+                        }
+                        /*dateatt.setText("AI:\t"+dataSnapshot.child("AI").getValue(String.class));
                         dateatt.setText(dateatt.getText()+"\nIWCS:\t"+dataSnapshot.child("IWCS").getValue(String.class));
                         dateatt.setText(dateatt.getText()+"\nDAA:\t"+dataSnapshot.child("DAA").getValue(String.class));
-                        dateatt.setText(dateatt.getText()+"\nDBMS:\t"+dataSnapshot.child("DBMS").getValue(String.class));
+                        dateatt.setText(dateatt.getText()+"\nDBMS:\t"+dataSnapshot.child("DBMS").getValue(String.class));*/
                     }
 
                     @Override

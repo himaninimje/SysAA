@@ -1,140 +1,90 @@
 package com.sem6.sysaa;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.ValueEventListener;
-import com.google.firebase.database.DatabaseReference;
 
-//SIGN IN HERE
+
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mEmailField;
-    private EditText mPasswordField;
-    private Button mLoginBtn;
-    private TextView mSignupBtn,teacherLogin;
-    String checkuid1;
-    AlertDialog alert11;
-    //Declaring Firebase Database object
     private FirebaseAuth mAuth;
-
-    //Declaring Firebase AuthStateListener object for auto-signing in
-    //after closing the app
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    //Declaring Firebase Realtime-Database object to interact with
-    //Real-time Database
-    private DatabaseReference mDatabase;
-
-    private ProgressDialog progressDialog;
-
-    private int backButtonCount = 0;
-    private ProgressDialog mProgress;
-
+    int k=1;
+    private FirebaseAuth.AuthStateListener mAuthListener,ma;
+    String name,n;
     LinearLayout li;
     long back_pressed;
-    String macAddress;
-
+    String macAddress,uid;
+    TextView info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        teacherLogin=(TextView) findViewById(R.id.teacherLogin);
-        li = (LinearLayout) findViewById(R.id.lay123);
-
-        //Initialize the Firebase Authentication Database Object
         mAuth = FirebaseAuth.getInstance();
+        info=(TextView) findViewById(R.id.sysaa);
         macAddress= android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        mEmailField = (EditText) findViewById(R.id.emailField);
-        mPasswordField = (EditText) findViewById(R.id.passwordField);
+        mAuthListener=new FirebaseAuth.AuthStateListener(){
+            public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()!=null)
+                {uid=firebaseAuth.getCurrentUser().getUid().trim();
+                Firebase te=new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+uid+"/Name");
+                te.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        n=dataSnapshot.getValue(String.class);k++;
+                        //info.setText(info.getText()+"\nteacher check: "+n);
+                        if(n!=null)
+                        {
+                            //info.setText(info.getText()+"\nuser exists:(teacher");
+                            Intent intentx= new Intent(MainActivity.this,TeacherDash.class);
+                            startActivity(intentx);
+                            finish();
+                        }
+                    }
 
-        mLoginBtn = (Button) findViewById(R.id.loginBtn);
-        mSignupBtn = (TextView) findViewById(R.id.signupBtn);
-        mProgress = new ProgressDialog(this);
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
 
-        Firebase fb1=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/UID");
-        fb1.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    checkuid1 = dataSnapshot.getValue().toString();
-                }
-                catch (NullPointerException ne){}
+                    }
+                });
+                Firebase stu=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+macAddress+"/UID");
+                stu.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        name=dataSnapshot.getValue(String.class);k++;
+                        //info.setText(info.getText()+"\nstudent check: "+name);
+                        //info.setText(info.getText()+"\nstudent wuid: "+uid);
+                        if(name.trim()!=null&&uid.trim()!=null&&name.trim().equals(uid.trim())) {
+                            //info.setText(info.getText()+"\nuser exists:( studentttttt");
+                            Intent intentx = new Intent(MainActivity.this, Nav.class);
+                            startActivity(intentx);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
-
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-        /*  On this activity start (This is the launcher activity)
-            the app first checks the AuthState of the app, with
-            AuthStateListener object. firebaseAuth is a FirebaseAuth
-            variable which has methods such has getCurrentUser() to
-            automatically get the current logged in user.
-
-            NOTE: AuthState listener is set to check if user has already
-            logged into the app. IF it is his/her first time, it is not
-            set and he/she needs to sign in to the app.
-         */
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                if (firebaseAuth.getCurrentUser() != null)
+            else
                 {
-                    mProgress.setMessage("Give Us A Moment...");
-                    mProgress.show();
-                    mProgress.dismiss();
-                    Intent intentx= new Intent(MainActivity.this,Nav.class);
-                    startActivity(intentx);
-                    finish();
-
-
+                    startActivity(new Intent(MainActivity.this,StuLogin.class));
                 }
             }
+
         };
-        teacherLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,TeacherLogin.class));
-            }
-        });
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSignIn();
-            }
-        });
-
-        mSignupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SignUpTest.class));
-            }
-        });
-
-        progressDialog = new ProgressDialog(MainActivity.this);
-
     }
 
     @Override
@@ -149,109 +99,17 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
+            if(name==null&&n==null)
+                startActivity(new Intent(MainActivity.this,StuLogin.class));
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-    private void startSignIn()
+    public void kook()
     {
-
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
-
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            //User did not enter any email or password.
-            Snackbar snackbar = Snackbar
-                    .make(li, R.string.empty_field, Snackbar.LENGTH_LONG);
-            snackbar.show();
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Snackbar snackbar = Snackbar
-                    .make(li, R.string.incorrect_email, Snackbar.LENGTH_LONG);
-            snackbar.show();
-        }
-        else {
-
-            progressDialog.setMessage("Logging in...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.show();
-
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    if (!task.isSuccessful()) {
-                        //if incorrect email/password entered.
-                        progressDialog.dismiss();
-                        Snackbar snackbar = Snackbar
-                                .make(li, R.string.auth_failed, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-                    else
-                    {
-                        Snackbar snackbar = Snackbar
-                                .make(li, R.string.auth_success, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-
-                        if(checkuid1==null)
-                        {
-                            progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
-                            FirebaseAuth.getInstance().signOut();
-                            Intent intent=new Intent(MainActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else if(!checkuid1.equals(FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim()))
-                        {
-                            progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
-                            /*final AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-                            builder1.setTitle("Sign In Failed");
-                            builder1.setMessage("UnAuthorized Sign-in Attempt");
-                            builder1.setCancelable(true);
-
-
-                            builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    alert11.cancel();
-
-
-                                }
-                            });
-                            alert11=builder1.create();
-                            alert11.show();*/
-                            FirebaseAuth.getInstance().signOut();
-                            Intent intent=new Intent(MainActivity.this,MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else
-                        {
-                            //Date tttt= Calendar.getInstance().getTime();
-                            /*DateFormat df=new SimpleDateFormat("HHmm");
-                            String tttt=df.format(Calendar.getInstance().getTime());
-                            Toast.makeText(MainActivity.this, tttt, Toast.LENGTH_LONG).show();*/
-                            Intent intent = new Intent(MainActivity.this, Nav.class);
-                            startActivity(intent);
-                            progressDialog.dismiss();
-                            finish();
-                        }
-
-
-                    }
-                }
-            });
-        }
-
+        if(k==1||k>=3)
+            startActivity(new Intent(MainActivity.this,StuLogin.class));
     }
-
-    /**
-     * Back button listener.
-     * Will close the application if the back button pressed twice.
-     */
-
     @Override
     public void onBackPressed() {
         if (back_pressed + 3000 > System.currentTimeMillis()) {

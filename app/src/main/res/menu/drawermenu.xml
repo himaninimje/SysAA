@@ -11,9 +11,6 @@
 
     <group android:id="@+id/group_settings_id">
 
-        <item android:title="TimeTable"
-            android:id="@+id/nav_item_tt"
-            android:icon="@drawable/fixtures"/>
 
         <item android:title="Settings"
             android:id="@+id/nav_item_settings"
