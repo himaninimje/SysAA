@@ -75,7 +75,7 @@ public class TeacherDash extends AppCompatActivity implements NavigationView.OnN
         listView = (ListView) findViewById(R.id.listteach);
 
         // Defined Array values to show in ListView
-        String[] values = new String[] { "Today's Schedule",
+        String[] values = new String[] {
                 "Present",
                 "Schedule",
                 "Subjects"
@@ -100,15 +100,12 @@ public class TeacherDash extends AppCompatActivity implements NavigationView.OnN
                 switch (position)
                 {
                     case 0:
-                        Intent myIntent = new Intent(TeacherDash.this, TeacherToday.class);
-                        startActivity(myIntent); break;
-                    case 1:
                         Intent myIntent1 = new Intent(TeacherDash.this, TeacherPresent.class);
                         startActivity(myIntent1);break;
-                    case 2:
+                    case 1:
                         Intent myIntent2 = new Intent(TeacherDash.this, TeacherSchedule.class);
                         startActivity(myIntent2);break;
-                    case 3:
+                    case 2:
                         Intent myIntent3 = new Intent(TeacherDash.this, TeacherSubject.class);
                         startActivity(myIntent3);break;
                 }

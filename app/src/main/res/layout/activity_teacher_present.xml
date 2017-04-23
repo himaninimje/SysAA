@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.sem6.sysaa.TeacherPresent">
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/date"
-    />
     <Button
         android:id="@+id/setdate"
-        android:paddingTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:text="Set Date"
-        tools:layout_editor_absoluteY="253dp"
-        tools:layout_editor_absoluteX="130dp" />
-</LinearLayout>
+        android:text="Set Date" />
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/std_list" />
+
+    <ListView
+        android:id="@+id/std_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FDE3ff"
+        android:layout_marginTop="140dp"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/setdate"
+        android:layout_toLeftOf="@+id/spinner" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/setdate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#FDE3A7" />
+
+</RelativeLayout>

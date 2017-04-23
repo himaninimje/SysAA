@@ -28,18 +28,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class TeacherPresent extends AppCompatActivity //implements AdapterView.OnItemSelectedListener
+public class TeacherPresent extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
     private Button setDate;
     private int year, month, day;
+    String attn_date;
     private Firebase teacher;
     private TextView tv;
     private String today;
     private String today_date;
-    private String subs;
+    private String subs,uuid;
     private String sub;
     private Spinner spinner;
     private ListView std_list;
@@ -100,9 +101,16 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
 
     private void showDate(int year, int month, int day) {
         if (month<10)
-            dateView.setText(day+"-0"+month+"-"+year);
+        {
+            attn_date=day+"-0"+month+"-"+year;
+            dateView.setText("Select Subject for "+day+"-0"+month+"-"+year);
+        }
         else
-            dateView.setText(day+"-"+month+"-"+year);
+        {
+            attn_date=day+"-"+month+"-"+year;
+            dateView.setText("Select Subject for "+day+"-"+month+"-"+year);
+        }
+
         Date d=new Date(year,month,day);
         int weekdaynum=d.getDay();
         String weekDay="";
@@ -124,10 +132,10 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
             case 6:
                 weekDay="WEDNESDAY";break;
         }
-        dateView.setText(dateView.getText()+"....\n"+weekDay);
-        //showPresent(weekDay);
+        dateView.setText(dateView.getText()+", "+weekDay);
+        showPresent(weekDay);
     }
-    /*public  void showPresent(String day)
+    public  void showPresent(String day)
     {
         tv=(TextView)findViewById(R.id.textView5);
         spinner=(Spinner)findViewById(R.id.spinner);
@@ -147,7 +155,7 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
         mAuth=FirebaseAuth.getInstance();
 
         teacher=new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+mAuth.getCurrentUser().getUid().toString().trim()
-                +"/Timetable/"+today);
+                +"/Timetable/"+today.toUpperCase());
         teacher.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -185,17 +193,17 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
         students.clear();
 
         subb=parent.getItemAtPosition(position).toString();
-        Log.d("subject",Integer.toString(subb.length()));
-        final String attn_date="21-04-2017";
+        Log.d("subject",subb);
+        //attn_date="21-04-2017";
 
-        student=new Firebase("https://sysaa-be58b.firebaseio.com/Att");
+        student=new Firebase("https://sysaa-be58b.firebaseio.com/Att/");
         student.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                String temp=dataSnapshot.getValue().toString();
-                Log.d("listsub",temp);
+                //String temp=dataSnapshot.getValue(String.class);
+                //Log.d("listsub",temp);
                 itr2=dataSnapshot.getChildren().iterator();
 
                 while(itr2.hasNext())
@@ -212,13 +220,15 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
                 Iterator itr3=uid_list.iterator();
                 while ((itr3.hasNext()))
                 {
-                    student2=new Firebase("https://timetable-7e2a8.firebaseio.com/Student/"+itr3.next()+"/"+attn_date);
+                    uuid=itr3.next().toString().trim();
+                    Log.d("uid test",uuid);
+                    student2=new Firebase("https://sysaa-be58b.firebaseio.com/Att/"+uuid+"/"+attn_date);
                     student2.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            tmpp=uid_list.get(i);
+                            /*tmpp=uid_list.get(i);
                             i++;
-                            if(dataSnapshot.getValue().toString().contains(subb))
+                            if(dataSnapshot.getValue(String.class)!=null&&dataSnapshot.getValue(String.class).contains(subb))
                             {
                                 Toast.makeText(TeacherPresent.this, "inside studentttt", Toast.LENGTH_SHORT).show();
 
@@ -226,6 +236,43 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
                                 Log.d("listvw",students.toString());
                                 arrayAdapter2=new ArrayAdapter<String>(TeacherPresent.this,android.R.layout.simple_list_item_1,students);
                                 std_list.setAdapter(arrayAdapter2);
+                            }*/
+                            Iterator<DataSnapshot> idit=dataSnapshot.getChildren().iterator();
+                            while(idit.hasNext())
+                            {
+                                String s=idit.next().getValue(String.class);
+                                Log.d("sub",s+subb+uuid);
+                                tmpp=uid_list.get(i);
+                                if(i<uid_list.size()-2)
+                                    i++;
+                                if(s.contains(subb))
+                                {
+                                    Firebase addNames=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+tmpp+"/Name");
+                                    addNames.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            students.add(dataSnapshot.getValue(String.class));
+                                            arrayAdapter2=new ArrayAdapter<String>(TeacherPresent.this,android.R.layout.simple_list_item_1,students);
+                                            std_list.setAdapter(arrayAdapter2);
+                                            Log.d("std_list",std_list.toString());
+                                            if(students.isEmpty())
+                                            {
+                                                tv.setText("No Students Present");
+                                            }
+                                            else
+                                            {
+                                                tv.setText("");
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+
+                                }
                             }
                         }
                         @Override
@@ -239,11 +286,19 @@ public class TeacherPresent extends AppCompatActivity //implements AdapterView.O
 
             }
         });
+        if(students.isEmpty())
+        {
+            tv.setText("No Students Present");
+        }
+        else
+        {
+            tv.setText("");
+        }
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }*/
+    }
 }

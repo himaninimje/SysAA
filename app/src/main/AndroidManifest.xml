@@ -51,10 +51,6 @@
         <activity
             android:name=".TeacherDash"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".TeacherToday"
-            android:label="@string/title_activity_teacher_today"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TeacherPresent" />
         <activity android:name=".TeacherSchedule" />
         <activity android:name=".TeacherSubject" />
