@@ -28,7 +28,10 @@
         android:id="@+id/home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="400dp"
+        android:layout_marginBottom="4dp"
+
         android:text="Home"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="center_vertical|center_horizontal" />
