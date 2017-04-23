@@ -83,6 +83,12 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
         if (id == 999) {
+            if(std_list!=null)
+                std_list.clearChoices();
+            if(students!=null)
+                students.clear();
+            if(uid_list!=null)
+                uid_list.clear();
             return new DatePickerDialog(this,
                     myDateListener, year, month, day);
         }
@@ -141,14 +147,16 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
         spinner=(Spinner)findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         students=new ArrayList<String>();
-        students.add("init");
-        std_list=(ListView) findViewById(R.id.std_list);
 
-        SimpleDateFormat sddf = new SimpleDateFormat("EEEE");
+        std_list=(ListView) findViewById(R.id.std_list);
+        std_list.clearChoices();
+        students.clear();
+        students.add("init");
+        /*SimpleDateFormat sddf = new SimpleDateFormat("EEEE");
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         Calendar c = Calendar.getInstance();
         today=sddf.format(c.getTime());
-        today_date=df.format(c.getTime());
+        today_date=df.format(c.getTime());*/
         subjects=new ArrayList<String>();
         //today="MONDAY";
         today=day;
@@ -160,7 +168,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itr=dataSnapshot.getChildren().iterator();
-
+                subjects.clear();
                 while(itr.hasNext())
                 {
                     subs=itr.next().toString();
@@ -191,6 +199,8 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
         uid_list.clear();
         i=0;
         students.clear();
+        std_list.clearChoices();
+
 
         subb=parent.getItemAtPosition(position).toString();
         Log.d("subject",subb);
@@ -205,7 +215,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
                 //String temp=dataSnapshot.getValue(String.class);
                 //Log.d("listsub",temp);
                 itr2=dataSnapshot.getChildren().iterator();
-
+                uid_list.clear();
                 while(itr2.hasNext())
                 {
 
@@ -237,6 +247,8 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
                                 arrayAdapter2=new ArrayAdapter<String>(TeacherPresent.this,android.R.layout.simple_list_item_1,students);
                                 std_list.setAdapter(arrayAdapter2);
                             }*/
+                            students.clear();
+                            std_list.clearChoices();
                             Iterator<DataSnapshot> idit=dataSnapshot.getChildren().iterator();
                             while(idit.hasNext())
                             {
