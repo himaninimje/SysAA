@@ -77,8 +77,8 @@ public class TeacherDash extends AppCompatActivity implements NavigationView.OnN
         // Defined Array values to show in ListView
         String[] values = new String[] {
                 "Present",
-                "Schedule",
-                "Subjects"
+                "Schedule"//,
+                //"Subjects"
         };
 
 
@@ -105,15 +105,15 @@ public class TeacherDash extends AppCompatActivity implements NavigationView.OnN
                     case 1:
                         Intent myIntent2 = new Intent(TeacherDash.this, TeacherSchedule.class);
                         startActivity(myIntent2);break;
-                    case 2:
+                    /*case 2:
                         Intent myIntent3 = new Intent(TeacherDash.this, TeacherSubject.class);
-                        startActivity(myIntent3);break;
+                        startActivity(myIntent3);break;*/
                 }
             }
 
         });
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
+    /*public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav, menu);
         return true;
@@ -132,7 +132,7 @@ public class TeacherDash extends AppCompatActivity implements NavigationView.OnN
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
     protected void onStart() {
         super.onStart();
 
