@@ -17,8 +17,9 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text=""
-        android:layout_below="@+id/std_list" />
+        android:layout_below="@+id/date" />
 
     <ListView
         android:id="@+id/std_list"
