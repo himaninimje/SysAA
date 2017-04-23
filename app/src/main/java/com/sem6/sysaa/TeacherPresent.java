@@ -256,6 +256,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
                                             arrayAdapter2=new ArrayAdapter<String>(TeacherPresent.this,android.R.layout.simple_list_item_1,students);
                                             std_list.setAdapter(arrayAdapter2);
                                             Log.d("std_list",std_list.toString());
+                                            tv.setText("Count: "+students.size());
 
                                         }
 
@@ -287,7 +288,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
         }
         else
         {
-            tv.setText("");
+            tv.setText("Count: "+students.size());
         }
 
     }

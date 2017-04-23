@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:textSize="20dp"
         android:text=""
         android:layout_below="@+id/date" />
 
@@ -26,13 +27,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FDE3ff"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/textView5"
         android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/setdate"
         android:layout_toLeftOf="@+id/spinner" />
     <Spinner
