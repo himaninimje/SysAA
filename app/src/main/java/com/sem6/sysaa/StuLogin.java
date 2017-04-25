@@ -168,7 +168,7 @@ public class StuLogin extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(StuLogin.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();
-                            //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&777777");
+                            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&777777");
                             Intent intent=new Intent(StuLogin.this,StuLogin.class);
                             startActivity(intent);
                             finish();
@@ -178,7 +178,7 @@ public class StuLogin extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(StuLogin.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
                             FirebaseAuth.getInstance().signOut();
-                            //System.out.println("...................................................................................");
+                            System.out.println("...................................................................................");
                             Intent intent=new Intent(StuLogin.this,StuLogin.class);
                             startActivity(intent);
                             finish();

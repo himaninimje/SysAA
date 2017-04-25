@@ -145,12 +145,12 @@ public class TeacherLogin extends AppCompatActivity {
                                 }}
                                 catch(NullPointerException exp)
                                 {
-                                    progressDialog.dismiss();
+                                    /*progressDialog.dismiss();
                                     Toast.makeText(TeacherLogin.this, "UNAUTHORIZED SIGN IN", Toast.LENGTH_LONG).show();
                                     FirebaseAuth.getInstance().signOut();
                                     Intent intent = new Intent(TeacherLogin.this, TeacherLogin.class);
                                     startActivity(intent);
-                                    finish();
+                                    finish();*/
                                 }
                             }
 

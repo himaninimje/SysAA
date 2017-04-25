@@ -1,6 +1,7 @@
 package com.sem6.sysaa;
 
 import android.*;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -51,6 +52,7 @@ public class Nav extends AppCompatActivity
     private DrawerLayout drawer;
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager mBeaconManager;
+    private ProgressDialog Progress;
     Firebase fbname,checkteacher,batchfb;
     String names,uid;
     Menu m;
@@ -62,6 +64,9 @@ public class Nav extends AppCompatActivity
         setContentView(R.layout.activity_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Progress = new ProgressDialog(this);
+        Progress.setMessage("Scanning for beacon ...");
+        Progress.show();
         /*uid=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         checkteacher= new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+uid+"/Name");
         checkteacher.addValueEventListener(new ValueEventListener() {
@@ -165,7 +170,7 @@ public class Nav extends AppCompatActivity
         }
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -187,7 +192,7 @@ public class Nav extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -228,7 +233,7 @@ public class Nav extends AppCompatActivity
             e.printStackTrace();
         }
         mBeaconManager.addRangeNotifier(this);
-        Toast.makeText(this, "inside service connect", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "inside service connect", Toast.LENGTH_SHORT).show();
     }
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         for (Beacon beacon : beacons) {

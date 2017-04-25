@@ -32,9 +32,20 @@ public class Attendance extends Fragment {
     private Calendar calendar;
     private int year, month, day;
     Bundle extras;
-    Iterator<DataSnapshot> subjctatt;
     public DatePickerDialog.OnDateSetListener myOnDateSetListener;
-    TextView att,testdate;String macAddress;
+    TextView att,testdate;
+    private Firebase tot;
+
+    private String daa;
+    private String dbms;
+    private String ai;
+    private String iwcs;
+    int pdaa=0;
+    int pdbms=0;
+    int pai=0;
+    int piwcs=0;
+    private String macAddress;
+    Iterator<DataSnapshot> subjctatt;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,15 +93,42 @@ public class Attendance extends Fragment {
         month=calendar.get(Calendar.MONTH);
         day=calendar.get(Calendar.DAY_OF_MONTH);
         att = (TextView) view.findViewById(R.id.att);
-        String macAddress= android.provider.Settings.Secure.getString(getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-        attf=new Firebase("https://sysaa-be58b.firebaseio.com/Att/"+macAddress+"/Total");
-        attf.addValueEventListener(new com.firebase.client.ValueEventListener() {
+        macAddress= android.provider.Settings.Secure.getString(getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        tot=new Firebase("https://sysaa-be58b.firebaseio.com/Total classes");
+        tot.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                att.setText("TOTAL\nAI:\t"+dataSnapshot.child("AI").getValue(String.class));
-                att.setText(att.getText()+"\nIWCS:\t"+dataSnapshot.child("IWCS").getValue(String.class));
-                att.setText(att.getText()+"\nDAA:\t"+dataSnapshot.child("DAA").getValue(String.class));
-                att.setText(att.getText()+"\nDBMS:\t"+dataSnapshot.child("DBMS").getValue(String.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                daa=dataSnapshot.child("DAA").getValue().toString();
+
+                dbms=dataSnapshot.child("DBMS").getValue().toString();
+                ai=dataSnapshot.child("AI").getValue().toString();
+                iwcs=dataSnapshot.child("IWCS").getValue().toString();
+
+
+                attf=new Firebase("https://sysaa-be58b.firebaseio.com/Att/"+macAddress+"/Total");
+                attf.addValueEventListener(new com.firebase.client.ValueEventListener() {
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        pdaa=(Integer.parseInt(daa)>0)?Integer.parseInt(dataSnapshot.child("DAA").getValue(String.class))*100/Integer.parseInt(daa):0;
+                        pdbms=(Integer.parseInt(dbms)>0)?Integer.parseInt(dataSnapshot.child("DBMS").getValue(String.class))*100/Integer.parseInt(dbms):0;
+                        pai=(Integer.parseInt(ai)>0)?Integer.parseInt(dataSnapshot.child("AI").getValue(String.class))*100/Integer.parseInt(ai):0;
+                        piwcs=(Integer.parseInt(iwcs)>0)?Integer.parseInt(dataSnapshot.child("IWCS").getValue(String.class))*100/Integer.parseInt(iwcs):0;
+
+
+
+                        att.setText("TOTAL\nAI:\t"+dataSnapshot.child("AI").getValue(String.class)+"/"+ai+"  "+pai +"%");
+                        att.setText(att.getText()+"\nIWCS:\t"+dataSnapshot.child("IWCS").getValue(String.class)+"/"+iwcs+"  "+piwcs +"%");
+                        att.setText(att.getText()+"\nDAA:\t"+dataSnapshot.child("DAA").getValue(String.class)+"/"+daa+"  "+pdaa +"%");
+                        att.setText(att.getText()+"\nDBMS:\t"+dataSnapshot.child("DBMS").getValue(String.class)+"/"+dbms+"  "+pdbms +"%");
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+
             }
 
             @Override

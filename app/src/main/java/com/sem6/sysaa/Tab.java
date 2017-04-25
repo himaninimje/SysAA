@@ -53,6 +53,8 @@ public class Tab extends AppCompatActivity{
 
     private String hour;
     private String min;
+    private Firebase tot_class;
+    private Firebase tot_class2;private Firebase inc_tot;
     public  String sub_time;
     private String today;
     private String user_id;
@@ -286,6 +288,38 @@ public class Tab extends AppCompatActivity{
 
                         }
                     });
+                    tot_class=new Firebase("https://sysaa-be58b.firebaseio.com/Daily attendance/"+today_date+"/"+sub_time);
+                    tot_class.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.getValue()==null)
+                            {
+                                tot_class2 =new Firebase("https://sysaa-be58b.firebaseio.com/Daily attendance");
+                                tot_class2.child(today_date).child(sub_time).setValue(sub);
+                                inc_tot=new Firebase("https://sysaa-be58b.firebaseio.com/Total classes/"+sub);
+                                inc_tot.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String value2=dataSnapshot.getValue().toString();
+                                        int value_num2=Integer.parseInt(value2)+1;
+                                        inc_tot.setValue(Integer.toString(value_num2));
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
 
 
                 }

@@ -40,7 +40,8 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
     private TextView tv;
     private String today;
     private String today_date;
-    private String subs,uuid;
+    private String subs;
+    //String uuid;
     private String sub;
     private Spinner spinner;
     private ListView std_list;
@@ -54,7 +55,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
     private ArrayAdapter<String> arrayAdapter;
     private  ArrayAdapter<String> arrayAdapter2;
     private String subb;
-    private String uid;
+    //private String uid;
     private String tmpp;
     private int i=0;
     private ArrayList<String> uid_list=new ArrayList<>();
@@ -158,7 +159,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
 
         teacher=new Firebase("https://sysaa-be58b.firebaseio.com/TEACHER/"+mAuth.getCurrentUser().getUid().toString().trim()
                 +"/Timetable/"+today.toUpperCase());
-        teacher.addValueEventListener(new ValueEventListener() {
+        teacher.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 itr=dataSnapshot.getChildren().iterator();
@@ -199,7 +200,7 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
         //attn_date="21-04-2017";
 
         student=new Firebase("https://sysaa-be58b.firebaseio.com/Att/");
-        student.addValueEventListener(new ValueEventListener() {
+        student.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -212,24 +213,16 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
 
                     String obj=itr2.next().toString();
                     Log.d("whole object",obj);
-                    uid =obj.substring(obj.indexOf("=")+2,obj.indexOf(","));
+                    String uid =obj.substring(obj.indexOf("=")+2,obj.indexOf(","));
                     Log.d("student id",uid);
                     uid_list.add(uid);
-
-                }
-                Log.d("list_uid",uid_list.toString());
-                Iterator itr3=uid_list.iterator();
-                while ((itr3.hasNext()))
-                {
-                    uuid=itr3.next().toString().trim();
-                    Log.d("uid test",uuid);
-                    student2=new Firebase("https://sysaa-be58b.firebaseio.com/Att/"+uuid+"/"+attn_date);
+                    student2=new Firebase("https://sysaa-be58b.firebaseio.com/Att/"+uid+"/"+attn_date);
                     student2.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            /*tmpp=uid_list.get(i);
+                            tmpp=uid_list.get(i);
                             i++;
-                            if(dataSnapshot.getValue(String.class)!=null&&dataSnapshot.getValue(String.class).contains(subb))
+                            /*if(dataSnapshot.getValue(String.class)!=null&&dataSnapshot.getValue(String.class).contains(subb))
                             {
                                 Toast.makeText(TeacherPresent.this, "inside studentttt", Toast.LENGTH_SHORT).show();
 
@@ -242,10 +235,10 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
                             while(idit.hasNext())
                             {
                                 String s=idit.next().getValue(String.class);
-                                Log.d("sub",s+subb+uuid);
-                                tmpp=uid_list.get(i);
+                                //Log.d("sub",s+subb+uuid);
+                                /*tmpp=uid_list.get(i);
                                 if(i<uid_list.size()-2)
-                                    i++;
+                                    i++;*/
                                 if(s.contains(subb))
                                 {
                                     Firebase addNames=new Firebase("https://sysaa-be58b.firebaseio.com/StuUsers/"+tmpp+"/Name");
@@ -273,7 +266,16 @@ public class TeacherPresent extends AppCompatActivity implements AdapterView.OnI
                         public void onCancelled(FirebaseError firebaseError) {
                         }
                     });
+
                 }
+                /*Log.d("list_uid",uid_list.toString());
+                Iterator itr3=uid_list.iterator();
+                while ((itr3.hasNext()))
+                {
+                    String uuid=itr3.next().toString().trim();
+                    Log.d("uid test",uuid);
+
+                }*/
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
